@@ -1,6 +1,6 @@
 # Maxbo Prismatrise
 
-Internt dashboard for daglig overvåkning av priser hos Monter, Obs Bygg og Byggmakker, sammenlignet med Maxbo.
+Internt dashboard for daglig overvåkning av priser hos Monter, OBS Bygg og Byggmakker, sammenlignet med Maxbo.
 
 ## Filer
 
