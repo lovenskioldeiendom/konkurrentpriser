@@ -1,0 +1,114 @@
+[
+  {
+    "snapshot_dato": "2026-05-08",
+    "nobb": "5709636009917",
+    "kategori": "Plater",
+    "produktnavn": "Gipsplate Norgips Standard 12.5x1200x2400",
+    "leverandor": "Norgips",
+    "enhet": "stk",
+    "priser": {
+      "maxbo":      { "pris": 149.00, "forpris": null,    "lagerstatus": "paa_lager", "url": "https://www.maxbo.no/...", "butikk": "Maxbo Sinsen" },
+      "monter":     { "pris": 152.00, "forpris": null,    "lagerstatus": "paa_lager", "url": "https://www.monter.no/...", "butikk": "Monter Alnabru" },
+      "obs_bygg":   { "pris": 145.00, "forpris": null,    "lagerstatus": "paa_lager", "url": "https://www.obsbygg.no/..." },
+      "byggmakker": { "pris": 152.35, "forpris": null,    "lagerstatus": "paa_lager", "url": "https://www.byggmakker.no/..." }
+    }
+  },
+  {
+    "snapshot_dato": "2026-05-08",
+    "nobb": "7032463821000",
+    "kategori": "Isolasjon",
+    "produktnavn": "Glava Proff 34 plate 100x570x1200",
+    "leverandor": "Glava",
+    "enhet": "m2",
+    "priser": {
+      "maxbo":      { "pris": 89.50,  "forpris": 99.00,   "lagerstatus": "paa_lager", "url": "https://www.maxbo.no/...", "butikk": "Maxbo Sinsen" },
+      "monter":     { "pris": 92.00,  "forpris": null,    "lagerstatus": "paa_lager", "url": "https://www.monter.no/...", "butikk": "Monter Alnabru" },
+      "obs_bygg":   { "pris": 87.50,  "forpris": null,    "lagerstatus": "paa_lager", "url": "https://www.obsbygg.no/..." },
+      "byggmakker": { "pris": 95.00,  "forpris": 110.00,  "lagerstatus": "paa_lager", "url": "https://www.byggmakker.no/..." }
+    }
+  },
+  {
+    "snapshot_dato": "2026-05-08",
+    "nobb": "25410978",
+    "kategori": "Trelast",
+    "produktnavn": "Terrassebord cu impregnert furu 28x120 klasse 1",
+    "leverandor": "Standardsortiment",
+    "enhet": "lm",
+    "priser": {
+      "maxbo":      { "pris": 38.50, "forpris": null,    "lagerstatus": "paa_lager", "url": "https://www.maxbo.no/...", "butikk": "Maxbo Sinsen" },
+      "monter":     { "pris": 39.90, "forpris": null,    "lagerstatus": "paa_lager", "url": "https://www.monter.no/...", "butikk": "Monter Alnabru" },
+      "obs_bygg":   { "pris": 36.95, "forpris": 42.00,   "lagerstatus": "paa_lager", "url": "https://www.obsbygg.no/..." },
+      "byggmakker": { "pris": 39.50, "forpris": null,    "lagerstatus": "paa_lager", "url": "https://www.byggmakker.no/..." }
+    }
+  },
+  {
+    "snapshot_dato": "2026-05-08",
+    "nobb": "7050780598825",
+    "kategori": "Isolasjon",
+    "produktnavn": "Rockwool Flexi A-plate 50x565x1200",
+    "leverandor": "Rockwool",
+    "enhet": "pakke",
+    "priser": {
+      "maxbo":      { "pris": 595.00, "forpris": null,    "lagerstatus": "paa_lager", "url": "https://www.maxbo.no/...", "butikk": "Maxbo Sinsen" },
+      "monter":     { "pris": 589.00, "forpris": null,    "lagerstatus": "paa_lager", "url": "https://www.monter.no/...", "butikk": "Monter Alnabru" },
+      "obs_bygg":   { "pris": 575.00, "forpris": null,    "lagerstatus": "paa_lager", "url": "https://www.obsbygg.no/..." },
+      "byggmakker": { "pris": 584.98, "forpris": null,    "lagerstatus": "paa_lager", "url": "https://www.byggmakker.no/..." }
+    }
+  },
+  {
+    "snapshot_dato": "2026-05-08",
+    "nobb": "7054963353706",
+    "kategori": "Mortel",
+    "produktnavn": "Weber B30 torrbetong 25kg",
+    "leverandor": "Weber",
+    "enhet": "sekk",
+    "priser": {
+      "maxbo":      { "pris": 142.00, "forpris": null,    "lagerstatus": "paa_lager", "url": "https://www.maxbo.no/...", "butikk": "Maxbo Sinsen" },
+      "monter":     { "pris": 145.00, "forpris": null,    "lagerstatus": "paa_lager", "url": "https://www.monter.no/...", "butikk": "Monter Alnabru" },
+      "obs_bygg":   { "pris": 135.00, "forpris": null,    "lagerstatus": "paa_lager", "url": "https://www.obsbygg.no/..." },
+      "byggmakker": { "pris": 139.00, "forpris": null,    "lagerstatus": "paa_lager", "url": "https://www.byggmakker.no/..." }
+    }
+  },
+  {
+    "snapshot_dato": "2026-05-08",
+    "nobb": "7057755250412",
+    "kategori": "Tak",
+    "produktnavn": "Isola Iso-D xtra undertak 1x25m",
+    "leverandor": "Isola",
+    "enhet": "rull",
+    "priser": {
+      "maxbo":      { "pris": 1849.00, "forpris": null,   "lagerstatus": "paa_lager", "url": "https://www.maxbo.no/...", "butikk": "Maxbo Sinsen" },
+      "monter":     { "pris": 1820.00, "forpris": null,   "lagerstatus": "paa_lager", "url": "https://www.monter.no/...", "butikk": "Monter Alnabru" },
+      "obs_bygg":   { "pris": 1759.00, "forpris": null,   "lagerstatus": "paa_lager", "url": "https://www.obsbygg.no/..." },
+      "byggmakker": { "pris": 1799.00, "forpris": null,   "lagerstatus": "paa_lager", "url": "https://www.byggmakker.no/..." }
+    }
+  },
+  {
+    "snapshot_dato": "2026-05-08",
+    "nobb": "7029560005389",
+    "kategori": "Plater",
+    "produktnavn": "Gulvspon 22x620x2420 standard",
+    "leverandor": "Forestia",
+    "enhet": "m2",
+    "priser": {
+      "maxbo":      { "pris": 195.00, "forpris": null,    "lagerstatus": "paa_lager", "url": "https://www.maxbo.no/...", "butikk": "Maxbo Sinsen" },
+      "monter":     { "pris": 199.00, "forpris": null,    "lagerstatus": "paa_lager", "url": "https://www.monter.no/...", "butikk": "Monter Alnabru" },
+      "obs_bygg":   { "pris": 189.00, "forpris": null,    "lagerstatus": "paa_lager", "url": "https://www.obsbygg.no/..." },
+      "byggmakker": { "pris": 199.00, "forpris": null,    "lagerstatus": "paa_lager", "url": "https://www.byggmakker.no/..." }
+    }
+  },
+  {
+    "snapshot_dato": "2026-05-08",
+    "nobb": "7057755371438",
+    "kategori": "Vind/dampsperre",
+    "produktnavn": "Isola Vindsperre Basic 1.30x25m",
+    "leverandor": "Isola",
+    "enhet": "rull",
+    "priser": {
+      "maxbo":      { "pris": 1149.00, "forpris": null,   "lagerstatus": "paa_lager", "url": "https://www.maxbo.no/...", "butikk": "Maxbo Sinsen" },
+      "monter":     { "pris": 1145.00, "forpris": null,   "lagerstatus": "paa_lager", "url": "https://www.monter.no/...", "butikk": "Monter Alnabru" },
+      "obs_bygg":   { "pris": 1129.00, "forpris": null,   "lagerstatus": "paa_lager", "url": "https://www.obsbygg.no/..." },
+      "byggmakker": { "pris": 1159.00, "forpris": null,   "lagerstatus": "ikke_paa_lager", "url": "https://www.byggmakker.no/..." }
+    }
+  }
+]

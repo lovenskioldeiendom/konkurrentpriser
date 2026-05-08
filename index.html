@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maxbo Prismatrise — konkurrentovervåkning</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --maxbo-blue: #004976;
+    --maxbo-blue-light: #006bb0;
+    --maxbo-orange: #f08827;
+    --bg: #fafaf7;
+    --surface: #ffffff;
+    --border: #e5e3dc;
+    --border-strong: #c8c4b8;
+    --text: #1a1a1a;
+    --text-muted: #6b6b6b;
+    --text-dim: #999;
+    --good: #2d7a3e;
+    --good-bg: #e8f3eb;
+    --bad: #c0392b;
+    --bad-bg: #fbeae7;
+    --neutral: #6b6b6b;
+    --neutral-bg: #f0efeb;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  .mono { font-family: 'IBM Plex Mono', monospace; }
+
+  /* Topplinje */
+  header {
+    background: var(--maxbo-blue);
+    color: white;
+    padding: 18px 32px;
+    border-bottom: 4px solid var(--maxbo-orange);
+  }
+  .header-inner {
+    max-width: 1600px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .brand {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+  }
+  .brand h1 {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+  .brand .subtitle {
+    font-size: 12px;
+    opacity: 0.75;
+    font-family: 'IBM Plex Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .meta {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    opacity: 0.85;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .meta span + span::before { content: ' · '; opacity: 0.5; }
+
+  /* Sammendragspanel */
+  .summary {
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 24px 32px 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+  .stat {
+    background: var(--surface);
+    padding: 18px 20px;
+  }
+  .stat-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+  .stat-value {
+    font-size: 28px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--maxbo-blue);
+  }
+  .stat-detail {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+  .stat-good { color: var(--good); }
+  .stat-bad { color: var(--bad); }
+
+  /* Filter */
+  .controls {
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 20px 32px 12px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .filter-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    margin-right: 4px;
+  }
+  .chip {
+    background: var(--surface);
+    border: 1px solid var(--border-strong);
+    padding: 6px 12px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    color: var(--text);
+    transition: all 0.12s;
+  }
+  .chip:hover { border-color: var(--maxbo-blue); }
+  .chip.active {
+    background: var(--maxbo-blue);
+    color: white;
+    border-color: var(--maxbo-blue);
+  }
+  .search {
+    margin-left: auto;
+    background: var(--surface);
+    border: 1px solid var(--border-strong);
+    padding: 6px 12px;
+    font-family: inherit;
+    font-size: 13px;
+    width: 240px;
+  }
+  .search:focus { outline: 2px solid var(--maxbo-blue); border-color: var(--maxbo-blue); }
+
+  /* Tabell */
+  .table-wrap {
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 0 32px 60px;
+    overflow-x: auto;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--surface);
+    border: 1px solid var(--border);
+  }
+  th, td {
+    padding: 10px 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+  }
+  th {
+    background: #f3f1ec;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    border-bottom: 2px solid var(--border-strong);
+    position: sticky;
+    top: 0;
+    cursor: pointer;
+    user-select: none;
+    white-space: nowrap;
+  }
+  th:hover { background: #ede9e1; color: var(--text); }
+  th.sortable::after {
+    content: ' ↕';
+    opacity: 0.3;
+    font-size: 9px;
+  }
+  th.sort-asc::after { content: ' ↑'; opacity: 1; color: var(--maxbo-blue); }
+  th.sort-desc::after { content: ' ↓'; opacity: 1; color: var(--maxbo-blue); }
+  th.maxbo-col { background: #e6eef4; color: var(--maxbo-blue); }
+
+  tbody tr:hover { background: #fafaf3; }
+
+  .nobb {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+  .product-name {
+    font-weight: 500;
+    color: var(--text);
+    max-width: 320px;
+  }
+  .product-supplier {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-family: 'IBM Plex Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .cat-tag {
+    display: inline-block;
+    padding: 2px 8px;
+    background: var(--neutral-bg);
+    color: var(--text-muted);
+    font-size: 10px;
+    font-family: 'IBM Plex Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    border: 1px solid var(--border);
+  }
+
+  .price-cell {
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 500;
+    text-align: right;
+    white-space: nowrap;
+  }
+  .price-cell.maxbo { background: #f4f8fb; }
+  .price-cell .forpris {
+    display: block;
+    font-size: 10px;
+    color: var(--text-dim);
+    text-decoration: line-through;
+    font-weight: 400;
+  }
+  .price-cell .pris-link {
+    color: var(--text);
+    text-decoration: none;
+    border-bottom: 1px dotted transparent;
+  }
+  .price-cell .pris-link:hover { border-bottom-color: var(--maxbo-blue); color: var(--maxbo-blue); }
+  .price-na {
+    color: var(--text-dim);
+    font-style: italic;
+    font-size: 11px;
+  }
+  .ikke-paa-lager {
+    display: block;
+    font-size: 9px;
+    color: var(--bad);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-top: 2px;
+  }
+
+  /* Diff-cell */
+  .diff-cell {
+    text-align: right;
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .diff-good { color: var(--good); }
+  .diff-bad { color: var(--bad); }
+  .diff-neutral { color: var(--text-muted); }
+
+  .badge {
+    display: inline-block;
+    padding: 2px 6px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .badge-good { background: var(--good-bg); color: var(--good); }
+  .badge-bad { background: var(--bad-bg); color: var(--bad); }
+  .badge-neutral { background: var(--neutral-bg); color: var(--text-muted); }
+
+  footer {
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 24px 32px 60px;
+    font-size: 11px;
+    color: var(--text-muted);
+    font-family: 'IBM Plex Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    border-top: 1px solid var(--border);
+  }
+  footer p { margin-top: 6px; }
+
+  @media (max-width: 900px) {
+    header { padding: 14px 16px; }
+    .summary, .controls, .table-wrap, footer { padding-left: 16px; padding-right: 16px; }
+    .search { width: 100%; margin-left: 0; }
+    .stat-value { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="brand">
+      <h1>Maxbo Prismatrise</h1>
+      <span class="subtitle">Konkurrentovervaakning</span>
+    </div>
+    <div class="meta">
+      <span id="meta-date">—</span>
+      <span id="meta-products">—</span>
+      <span>Oslo-omraadet</span>
+    </div>
+  </div>
+</header>
+
+<section class="summary" id="summary"></section>
+
+<section class="controls">
+  <span class="filter-label">Kategori:</span>
+  <div id="filters" style="display:flex; gap:6px; flex-wrap:wrap;"></div>
+  <input type="text" class="search" id="search" placeholder="Søk produkt eller NOBB...">
+</section>
+
+<section class="table-wrap">
+  <table id="matrix">
+    <thead>
+      <tr>
+        <th class="sortable" data-sort="kategori">Kat.</th>
+        <th class="sortable" data-sort="produktnavn">Produkt</th>
+        <th class="sortable" data-sort="nobb">NOBB</th>
+        <th class="sortable maxbo-col" data-sort="maxbo">Maxbo</th>
+        <th class="sortable" data-sort="monter">Monter</th>
+        <th class="sortable" data-sort="obs_bygg">Obs Bygg</th>
+        <th class="sortable" data-sort="byggmakker">Byggmakker</th>
+        <th class="sortable" data-sort="diff">Maxbo vs. snitt</th>
+        <th class="sortable" data-sort="posisjon">Posisjon</th>
+      </tr>
+    </thead>
+    <tbody id="tbody"></tbody>
+  </table>
+</section>
+
+<footer>
+  <p>Datakilde: scraping av offentlige prislister hos Monter, Obs Bygg og Byggmakker. Maxbo-priser hentes fra eget PIM-system.</p>
+  <p>Snapshot oppdateres daglig kl. 04:00. Diff = Maxbo-pris ift. snitt av tre konkurrenter. Negative tall (groent) = vi er rimeligere.</p>
+</footer>
+
+<script>
+const KJEDER = ['maxbo', 'monter', 'obs_bygg', 'byggmakker'];
+const KJEDE_NAVN = {
+  maxbo: 'Maxbo',
+  monter: 'Monter',
+  obs_bygg: 'Obs Bygg',
+  byggmakker: 'Byggmakker'
+};
+
+let DATA = [];
+let activeKategori = 'alle';
+let sortBy = null;
+let sortDir = 'asc';
+
+async function loadData() {
+  try {
+    const res = await fetch('data.json');
+    DATA = await res.json();
+    init();
+  } catch (e) {
+    document.getElementById('tbody').innerHTML =
+      `<tr><td colspan="9" style="padding:40px; text-align:center; color:var(--text-muted);">
+        Kunne ikke laste data.json — sjekk at filen er deployet sammen med index.html.
+      </td></tr>`;
+  }
+}
+
+function fmt(num) {
+  if (num == null) return '—';
+  return num.toLocaleString('nb-NO', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+function pctDiff(a, b) {
+  if (a == null || b == null || b === 0) return null;
+  return ((a - b) / b) * 100;
+}
+
+function snittKonkurrenter(rad) {
+  const priser = ['monter', 'obs_bygg', 'byggmakker']
+    .map(k => rad.priser[k]?.pris)
+    .filter(p => p != null);
+  if (priser.length === 0) return null;
+  return priser.reduce((s, p) => s + p, 0) / priser.length;
+}
+
+function init() {
+  // Meta
+  if (DATA.length > 0) {
+    document.getElementById('meta-date').textContent =
+      'Snapshot ' + DATA[0].snapshot_dato;
+    document.getElementById('meta-products').textContent =
+      DATA.length + ' produkter';
+  }
+
+  // Sammendrag
+  renderSummary();
+
+  // Kategorifiltre
+  const kategorier = ['alle', ...new Set(DATA.map(d => d.kategori))];
+  const filterDiv = document.getElementById('filters');
+  filterDiv.innerHTML = kategorier.map(k =>
+    `<button class="chip ${k === activeKategori ? 'active' : ''}" data-kat="${k}">${k}</button>`
+  ).join('');
+  filterDiv.querySelectorAll('.chip').forEach(btn => {
+    btn.addEventListener('click', () => {
+      activeKategori = btn.dataset.kat;
+      filterDiv.querySelectorAll('.chip').forEach(b => b.classList.toggle('active', b.dataset.kat === activeKategori));
+      renderTable();
+    });
+  });
+
+  // Søk
+  document.getElementById('search').addEventListener('input', renderTable);
+
+  // Sortering
+  document.querySelectorAll('th.sortable').forEach(th => {
+    th.addEventListener('click', () => {
+      const key = th.dataset.sort;
+      if (sortBy === key) {
+        sortDir = sortDir === 'asc' ? 'desc' : 'asc';
+      } else {
+        sortBy = key;
+        sortDir = 'asc';
+      }
+      document.querySelectorAll('th.sortable').forEach(h => h.classList.remove('sort-asc', 'sort-desc'));
+      th.classList.add(sortDir === 'asc' ? 'sort-asc' : 'sort-desc');
+      renderTable();
+    });
+  });
+
+  renderTable();
+}
+
+function renderSummary() {
+  const totalProd = DATA.length;
+  let billigst = 0, dyrest = 0, midten = 0, manglerMatch = 0;
+  let totalDiffPct = 0, validDiffer = 0;
+
+  DATA.forEach(rad => {
+    const maxboPris = rad.priser.maxbo?.pris;
+    const konkPriser = ['monter', 'obs_bygg', 'byggmakker']
+      .map(k => rad.priser[k]?.pris)
+      .filter(p => p != null);
+
+    if (maxboPris == null || konkPriser.length === 0) {
+      manglerMatch++;
+      return;
+    }
+
+    const minKonk = Math.min(...konkPriser);
+    const maxKonk = Math.max(...konkPriser);
+
+    if (maxboPris < minKonk) billigst++;
+    else if (maxboPris > maxKonk) dyrest++;
+    else midten++;
+
+    const snitt = konkPriser.reduce((s, p) => s + p, 0) / konkPriser.length;
+    totalDiffPct += pctDiff(maxboPris, snitt);
+    validDiffer++;
+  });
+
+  const snittDiff = validDiffer > 0 ? (totalDiffPct / validDiffer) : 0;
+  const snittDiffClass = snittDiff < 0 ? 'stat-good' : snittDiff > 0 ? 'stat-bad' : '';
+
+  document.getElementById('summary').innerHTML = `
+    <div class="stat">
+      <div class="stat-label">Produkter overvaaket</div>
+      <div class="stat-value">${totalProd}</div>
+      <div class="stat-detail">${manglerMatch > 0 ? manglerMatch + ' uten full match' : 'alle har full match'}</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Snitt diff vs. konkurrenter</div>
+      <div class="stat-value ${snittDiffClass}">${snittDiff > 0 ? '+' : ''}${snittDiff.toFixed(1)}%</div>
+      <div class="stat-detail">vektet snitt av kategorier</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Billigst i markedet</div>
+      <div class="stat-value stat-good">${billigst}</div>
+      <div class="stat-detail">${((billigst/(billigst+midten+dyrest))*100).toFixed(0)}% av matchede produkter</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">I midten</div>
+      <div class="stat-value">${midten}</div>
+      <div class="stat-detail">verken billigst eller dyrest</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Dyrest i markedet</div>
+      <div class="stat-value stat-bad">${dyrest}</div>
+      <div class="stat-detail">krever vurdering</div>
+    </div>
+  `;
+}
+
+function renderTable() {
+  const sok = document.getElementById('search').value.toLowerCase().trim();
+
+  let rows = DATA.filter(rad => {
+    if (activeKategori !== 'alle' && rad.kategori !== activeKategori) return false;
+    if (sok) {
+      const blob = (rad.produktnavn + ' ' + rad.nobb + ' ' + rad.leverandor).toLowerCase();
+      if (!blob.includes(sok)) return false;
+    }
+    return true;
+  });
+
+  if (sortBy) {
+    rows.sort((a, b) => {
+      let va, vb;
+      if (KJEDER.includes(sortBy)) {
+        va = a.priser[sortBy]?.pris ?? Infinity;
+        vb = b.priser[sortBy]?.pris ?? Infinity;
+      } else if (sortBy === 'diff') {
+        const sa = snittKonkurrenter(a);
+        const sb = snittKonkurrenter(b);
+        va = sa != null && a.priser.maxbo?.pris != null ? pctDiff(a.priser.maxbo.pris, sa) : Infinity;
+        vb = sb != null && b.priser.maxbo?.pris != null ? pctDiff(b.priser.maxbo.pris, sb) : Infinity;
+      } else if (sortBy === 'posisjon') {
+        va = posisjonRang(a); vb = posisjonRang(b);
+      } else {
+        va = a[sortBy] ?? ''; vb = b[sortBy] ?? '';
+      }
+      if (va < vb) return sortDir === 'asc' ? -1 : 1;
+      if (va > vb) return sortDir === 'asc' ? 1 : -1;
+      return 0;
+    });
+  }
+
+  document.getElementById('tbody').innerHTML = rows.map(renderRow).join('');
+}
+
+function posisjonRang(rad) {
+  const maxboPris = rad.priser.maxbo?.pris;
+  const konkPriser = ['monter', 'obs_bygg', 'byggmakker']
+    .map(k => rad.priser[k]?.pris).filter(p => p != null);
+  if (maxboPris == null || konkPriser.length === 0) return 99;
+  if (maxboPris < Math.min(...konkPriser)) return 1;
+  if (maxboPris > Math.max(...konkPriser)) return 3;
+  return 2;
+}
+
+function renderRow(rad) {
+  const maxboPris = rad.priser.maxbo?.pris;
+  const snitt = snittKonkurrenter(rad);
+  const diff = pctDiff(maxboPris, snitt);
+  const rang = posisjonRang(rad);
+
+  let posBadge;
+  if (rang === 1) posBadge = '<span class="badge badge-good">Billigst</span>';
+  else if (rang === 3) posBadge = '<span class="badge badge-bad">Dyrest</span>';
+  else if (rang === 2) posBadge = '<span class="badge badge-neutral">Midten</span>';
+  else posBadge = '<span class="badge badge-neutral">N/A</span>';
+
+  let diffHtml = '<span class="diff-neutral">—</span>';
+  if (diff != null) {
+    const cls = diff < -0.5 ? 'diff-good' : diff > 0.5 ? 'diff-bad' : 'diff-neutral';
+    const sign = diff > 0 ? '+' : '';
+    diffHtml = `<span class="${cls}">${sign}${diff.toFixed(1)}%</span>`;
+  }
+
+  return `
+    <tr>
+      <td><span class="cat-tag">${rad.kategori}</span></td>
+      <td>
+        <div class="product-name">${rad.produktnavn}</div>
+        <div class="product-supplier">${rad.leverandor} · per ${rad.enhet}</div>
+      </td>
+      <td><span class="nobb">${rad.nobb || '—'}</span></td>
+      ${KJEDER.map(k => prisCell(rad.priser[k], k === 'maxbo')).join('')}
+      <td class="diff-cell">${diffHtml}</td>
+      <td>${posBadge}</td>
+    </tr>
+  `;
+}
+
+function prisCell(p, erMaxbo) {
+  const cls = 'price-cell' + (erMaxbo ? ' maxbo' : '');
+  if (!p || p.pris == null) {
+    return `<td class="${cls}"><span class="price-na">ikke tilgjengelig</span></td>`;
+  }
+  const linkOpen = p.url ? `<a class="pris-link" href="${p.url}" target="_blank" rel="noopener">` : '<span class="pris-link">';
+  const linkClose = p.url ? '</a>' : '</span>';
+  const forpris = p.forpris ? `<span class="forpris">${fmt(p.forpris)}</span>` : '';
+  const lagerVarsel = p.lagerstatus === 'ikke_paa_lager' ? '<span class="ikke-paa-lager">Ikke paa lager</span>' : '';
+  return `<td class="${cls}">${linkOpen}${fmt(p.pris)}${linkClose}${forpris}${lagerVarsel}</td>`;
+}
+
+loadData();
+</script>
+</body>
+</html>
